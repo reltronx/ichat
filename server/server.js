@@ -16,7 +16,7 @@ const path = require('path');
 const publicPath = path.join(__dirname , '../public');
 
 
-const port = process.env.PORT || 3000;
+const port = process.env.PORT || 4001;
 
 //setup the server to serve static files from the public folder
 app.use(express.static(publicPath));
@@ -41,10 +41,11 @@ io.on('connection' , (socket) => {
         users.addUser(socket.id,param.name,param.room);
 
         io.to(param.room).emit('updateUserList',users.getUserList(param.room))
+        console.log(param.name)
 
-        socket.emit('newMessage',generateMessage('Admin','Welcome to the chat room'));
+        socket.emit('newMessage',generateMessage('#covidkiller_bot',`Hi ${param.name} welcome to room ${param.room}`));
     
-        socket.broadcast.to(param.room).emit('newMessage',generateMessage('Admin',`${param.name} has joined the room`));
+        socket.broadcast.to(param.room).emit('newMessage',generateMessage('#covidkiller_bot',`${param.name} has joined the room`));
 
         callback();
 
@@ -81,7 +82,7 @@ io.on('connection' , (socket) => {
         if(user){
 
             io.to(user.room).emit('updateUserList',users.getUserList(user.room));
-            socket.broadcast.to(user.room).emit('newMessage',generateMessage('Admin',`${user.name} has left the room`));
+            socket.broadcast.to(user.room).emit('newMessage',generateMessage('#covidkiller_bot',`${user.name} has left the room`));
 
         }
         console.log('Client Disconnected ');

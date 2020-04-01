@@ -38,6 +38,7 @@ socket.on('disconnect' ,function(){
 socket.on('updateUserList',function(users){
     console.log(users);
     var ol = jQuery('<ol></ol>');
+    ol.append(jQuery('<li></li>').text('#covidkiller_bot'));
     users.forEach((user) => {
         ol.append(jQuery('<li></li>').text(user));
     });
@@ -48,6 +49,7 @@ socket.on('updateUserList',function(users){
 socket.on('newMessage', function(message){
 
     var formatedTime = moment(message.createdAt).format('dd hh:mm a');
+    
     var template = jQuery("#message-template").html();
     var html = Mustache.render(template,{
         from:message.from,
